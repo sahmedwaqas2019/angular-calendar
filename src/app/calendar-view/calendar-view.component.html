@@ -1,0 +1,60 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <button mat-raised-button (click)="prevMonth()">Previous</button>
+    <h2>{{ monthYear }}</h2>
+    <button mat-raised-button (click)="nextMonth()">Next</button>
+  </div>
+
+  <div class="day-names">
+    <div *ngFor="let day of dayNames">{{ day }}</div>
+  </div>
+
+  <div class="calendar-grid">
+    <div
+      *ngFor="let date of dates"
+      class="calendar-cell"
+      [class.past-date]="isPastDate(date)"
+      (click)="openModal(date)"
+      cdkDropList
+      [cdkDropListConnectedTo]="connectedDropLists"
+      (cdkDropListDropped)="onDrop($event, date)"
+      [id]="dateKey(date)"
+    >
+      <div class="calendar-date">{{ date.getDate() }}</div>
+      <div class="appointments-container">
+        <ng-container
+          *ngIf="getAppointmentsForDate(date) | async as appointments"
+        >
+          <div *ngIf="appointments.length > 0">
+            <div
+              *ngFor="let appointment of appointments; let i = index"
+              class="appointment"
+              cdkDrag
+            >
+              <span class="appointment-time">{{ appointment.time }}</span>
+              <span
+                class="appointment-title"
+                matTooltip="{{ appointment.title }}"
+                >{{ appointment.title }}</span
+              >
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteAppointment(date, i, $event)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="appointments-summary">
+  <h3>Current Appointments:</h3>
+
+  <pre>{{ appointments$ | async | json }}</pre>
+
+</div>

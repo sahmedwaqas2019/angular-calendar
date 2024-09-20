@@ -1,0 +1,15 @@
+<h4 mat-dialog-title class="header-add-appointment">Add Appointment</h4>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput [(ngModel)]="title" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Time</mat-label>
+    <input matInput [(ngModel)]="time" type="time" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onSave()">Save</button>
+</mat-dialog-actions>
